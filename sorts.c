@@ -18,7 +18,7 @@ void bubblesrot(char **arr, int n)
     {
         for (j = n - 1; j > i; j--)
         {
-            if (0 < strcmp(arr[j - 1], arr[j]))
+            if (strcmp(arr[j - 1], arr[j]) > 0)
             {
                 swap(&arr[j - 1], &arr[j]);
             }
@@ -26,18 +26,61 @@ void bubblesrot(char **arr, int n)
     }
 }
 
+/*void mergesort(char **arr, char **buff, int left, int right)
+{
+    if (left == right)
+    {
+        buff[left] = arr[left];
+        return buff;
+    }
+
+    int middle = (left + right) / 2;
+
+    char **l_buff = mergesort(arr, buff, left, middle);
+    char **r_buff = mergesort(arr, buff, middle + 1, right);
+
+    char **target = *l_buff == *arr ? buff: arr;
+    int width = right - left;
+    int l_cur = left;
+    int r_cur = middle + 1;
+    for (int i = left; i <= right; i++)
+    {
+        if (l_cur <= middle && r_cur <= right)
+        {
+            if (strcmp(l_buff[l_cur], r_buff[r_cur]) < 0)
+            {
+                target[i] = l_buff[l_cur];
+                l_cur++;
+            }
+            else
+            {
+                target[i] = r_buff[r_cur];
+                r_cur++;
+            }
+        }
+        else if (l_cur <= middle)
+        {
+            target[i] = l_buff[l_cur];
+            l_cur++;
+        }
+        else
+        {
+            target[i] = r_buff[r_cur];
+            r_cur++;
+        }
+    }
+    return target;
+}*/
+
 void insertsort(char **arr, int n)
 {
     int i;
     int j;
-    for (i = 0; i < n; i++)
+    for (i = 1; i < n; i++)
     {
-        for (j = 0; j < i; j++)
+        for (j = i; (j > 0) && (strcmp(arr[j], arr[j - 1]) < 0); j--)
         {
-            if (0 > strcmp(arr[i], arr[j]))
-            {
-                swap(&arr[i], &arr[j]);
-            }
+                swap(&arr[j - 1], &arr[j]);
         }
     }
 }
@@ -77,25 +120,8 @@ void quicksort (char **arr, int first, int last)
     }
 
 }
+
 const int maxlen = 1000;
-
-/*int main()
-{
-
-char *s1 = malloc(n * sizeof(char));
-char *s2 = malloc(n * sizeof(char));
-
-fgets(s1, n, stdin);
-fgets(s2, n, stdin);
-
-swap(&s1, &s2);
-
-fputs(s1, stdout);
-fputs(s2, stdout);
-
-
-return 0;
-}*/
 
 int main()
 {
@@ -107,9 +133,11 @@ int main()
     freopen("output.txt", "w", stdout);
     fscanf(stdin, "%d\n", &n);
     char **strarr = malloc(n * sizeof(char*));
+    char **copy = malloc(n * sizeof(char*));
     for (i = 0; i < n; i++)
     {
         strarr[i] = malloc((maxlen) * sizeof(char));
+        copy[i] = malloc((maxlen) * sizeof(char));
     }
 
     for (i = 0; i < n; i++)
@@ -125,11 +153,12 @@ int main()
             *pos = '\0';
         }
         numofstr++;
-
     }
+
+    //mergesort(strarr, copy, 0, numofstr - 1);
     //bubblesrot(strarr, numofstr);
-    //insertsort(strarr, numofstr);
-    quicksort(strarr, 0, numofstr - 1);
+    insertsort(strarr, numofstr);
+    //quicksort(strarr, 0, numofstr - 1);
 
     for (i = 0; i < numofstr; i++)
     {
