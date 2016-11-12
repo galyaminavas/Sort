@@ -10,7 +10,7 @@ s = *s1;
 *s2 = s;
 }
 
-void bubblesrot(char **arr, int n)
+void bubblesort(char **arr, int n)
 {
     int i;
     int j;
@@ -25,54 +25,74 @@ void bubblesrot(char **arr, int n)
         }
     }
 }
-
-/*void mergesort(char **arr, char **buff, int left, int right)
+void merge(char **arr, int left, int middle, int right)
 {
-    if (left == right)
+    int i;
+    int j;
+    int k;
+    int n1 = middle - left + 1;
+    int n2 = right - middle;
+
+    char **left_buff = malloc(n1 * sizeof(char*));
+    char **right_buff = malloc(n2 * sizeof(char*));
+
+    for (i = 0; i < n1; i++)
     {
-        buff[left] = arr[left];
-        return buff;
+        left_buff[i] = malloc((1000) * sizeof(char));
+        left_buff[i] = arr[left + i];
     }
 
-    int middle = (left + right) / 2;
-
-    char **l_buff = mergesort(arr, buff, left, middle);
-    char **r_buff = mergesort(arr, buff, middle + 1, right);
-
-    char **target = *l_buff == *arr ? buff: arr;
-    int width = right - left;
-    int l_cur = left;
-    int r_cur = middle + 1;
-    for (int i = left; i <= right; i++)
+    for (j = 0; j < n2; j++)
     {
-        if (l_cur <= middle && r_cur <= right)
+        right_buff[j] = malloc((1000) * sizeof(char));
+        right_buff[j] = arr[middle + 1 + j];
+    }
+
+    i = 0;
+    j = 0;
+    k = left;
+    while (i < n1 && j < n2)
+    {
+        if (strcmp(right_buff[j], left_buff[i]) > 0)
         {
-            if (strcmp(l_buff[l_cur], r_buff[r_cur]) < 0)
-            {
-                target[i] = l_buff[l_cur];
-                l_cur++;
-            }
-            else
-            {
-                target[i] = r_buff[r_cur];
-                r_cur++;
-            }
-        }
-        else if (l_cur <= middle)
-        {
-            target[i] = l_buff[l_cur];
-            l_cur++;
+            arr[k] = left_buff[i];
+            i++;
+            k++;
         }
         else
         {
-            target[i] = r_buff[r_cur];
-            r_cur++;
+            arr[k] = right_buff[j];
+            j++;
+            k++;
         }
     }
-    return target;
-}*/
+    while (i < n1)
+    {
+        arr[k] = left_buff[i];
+        i++;
+        k++;
+    }
+    while (j < n2)
+    {
+        arr[k] = right_buff[j];
+        j++;
+        k++;
+    }
+}
 
-void insertsort(char **arr, int n)
+void mergesort(char **arr, int left, int right)
+{
+    if (left < right)
+    {
+        int middle = left + (right - left) / 2;
+        mergesort(arr, left, middle);
+        mergesort(arr, middle + 1, right);
+
+        merge(arr, left, middle, right);
+    }
+}
+
+void insertionsort(char **arr, int n)
 {
     int i;
     int j;
@@ -133,11 +153,9 @@ int main()
     freopen("output.txt", "w", stdout);
     fscanf(stdin, "%d\n", &n);
     char **strarr = malloc(n * sizeof(char*));
-    char **copy = malloc(n * sizeof(char*));
     for (i = 0; i < n; i++)
     {
         strarr[i] = malloc((maxlen) * sizeof(char));
-        copy[i] = malloc((maxlen) * sizeof(char));
     }
 
     for (i = 0; i < n; i++)
@@ -155,10 +173,7 @@ int main()
         numofstr++;
     }
 
-    //mergesort(strarr, copy, 0, numofstr - 1);
-    //bubblesrot(strarr, numofstr);
-    insertsort(strarr, numofstr);
-    //quicksort(strarr, 0, numofstr - 1);
+    mergesort(strarr, 0, numofstr - 1);
 
     for (i = 0; i < numofstr; i++)
     {
