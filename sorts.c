@@ -106,7 +106,7 @@ void insertionsort(char **arr, int n)
     }
 }
 
-int partition (char **arr, int left, int right)
+int partition(char **arr, int left, int right)
 {
     int j = left;
     int i;
@@ -122,7 +122,7 @@ int partition (char **arr, int left, int right)
     return j;
 }
 
-void quicksort (char **arr, int left, int right)
+void quicksort(char **arr, int left, int right)
 {
     if (left < right)
     {
@@ -172,18 +172,29 @@ int main()
     switch(method)
     {
     case 1:
-        bubblesort(strarr, numofstr);
-        break;
+        {
+            bubblesort(strarr, numofstr);
+            break;
+        }
     case 2:
-        mergesort(strarr, 0, numofstr - 1);
-        break;
+        {
+            mergesort(strarr, 0, numofstr - 1);
+            break;
+        }
     case 3:
-        insertionsort(strarr, numofstr);
-        break;
+        {
+            insertionsort(strarr, numofstr);
+            break;
+        }
     case 4:
-        quicksort(strarr, 0, numofstr);
-        break;
+        {
+            quicksort(strarr, 0, numofstr);
+            break;
+        }
     default:
+        {
+            break;
+        }
         break;
     }
 
