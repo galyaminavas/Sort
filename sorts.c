@@ -4,10 +4,10 @@
 
 void swap(char **s1, char **s2)
 {
-char *s;
-s = *s1;
-*s1 = *s2;
-*s2 = s;
+    char *s;
+    s = *s1;
+    *s1 = *s2;
+    *s2 = s;
 }
 
 void bubblesort(char **arr, int n)
@@ -18,9 +18,9 @@ void bubblesort(char **arr, int n)
     {
         for (j = n - 1; j > i; j--)
         {
-            if (strcmp(arr[j - 1], arr[j]) > 0)
+            if (strcmp(arr[j], arr[j - 1]) < 0)
             {
-                swap(&arr[j - 1], &arr[j]);
+                swap(&arr[j], &arr[j - 1]);
             }
         }
     }
@@ -51,20 +51,20 @@ void merge(char **arr, int left, int middle, int right)
     i = 0;
     j = 0;
     k = left;
+
     while (i < n1 && j < n2)
     {
-        if (strcmp(right_buff[j], left_buff[i]) > 0)
+        if (strcmp(left_buff[i], right_buff[j]) < 0)
         {
             arr[k] = left_buff[i];
             i++;
-            k++;
         }
         else
         {
             arr[k] = right_buff[j];
             j++;
-            k++;
         }
+        k++;
     }
     while (i < n1)
     {
@@ -78,6 +78,8 @@ void merge(char **arr, int left, int middle, int right)
         j++;
         k++;
     }
+    free(left_buff);
+    free(right_buff);
 }
 
 void mergesort(char **arr, int left, int right)
@@ -87,7 +89,6 @@ void mergesort(char **arr, int left, int right)
         int middle = left + (right - left) / 2;
         mergesort(arr, left, middle);
         mergesort(arr, middle + 1, right);
-
         merge(arr, left, middle, right);
     }
 }
@@ -100,45 +101,35 @@ void insertionsort(char **arr, int n)
     {
         for (j = i; (j > 0) && (strcmp(arr[j], arr[j - 1]) < 0); j--)
         {
-                swap(&arr[j - 1], &arr[j]);
+            swap(&arr[j - 1], &arr[j]);
         }
     }
 }
 
-void quicksort (char **arr, int first, int last)
+int partition (char **arr, int left, int right)
 {
-    int i = first;
-    int j = last;
-    char *p = arr[(first+last) / 2];
-    if (i <= j)
+    int j = left;
+    int i;
+    for (i = left + 1; i <= right; i++)
     {
-        while (strcmp(arr[i], p) < 0)
+        if (strcmp(arr[i], arr[left]) < 0)
         {
-            i++;
-        }
-        while (strcmp(arr[j], p) > 0)
-        {
-            j--;
-        }
-        if (i <= j)
-        {
-            if (strcmp(arr[i], arr[j]) > 0)
-            {
-                 swap(&arr[i], &arr[j]);
-            }
-            i++;
-            j--;
+            swap(&arr[i], &arr[j + 1]);
+            j++;
         }
     }
-    if (i < last)
-    {
-        quicksort(arr, i, last);
-    }
-    if (first < j)
-    {
-        quicksort(arr, first, j);
-    }
+    swap(&arr[j], &arr[left]);
+    return j;
+}
 
+void quicksort (char **arr, int left, int right)
+{
+    if (left < right)
+    {
+        int m = partition(arr, left, right);
+        quicksort(arr, left, m - 1);
+        quicksort(arr, m + 1, right);
+    }
 }
 
 const int maxlen = 1000;
@@ -148,16 +139,15 @@ int main()
     int n;
     int i;
     int numofstr = 0;
-
     freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
     fscanf(stdin, "%d\n", &n);
+
     char **strarr = malloc(n * sizeof(char*));
+
     for (i = 0; i < n; i++)
     {
         strarr[i] = malloc((maxlen) * sizeof(char));
     }
-
     for (i = 0; i < n; i++)
     {
         if (feof(stdin))
@@ -172,16 +162,39 @@ int main()
         }
         numofstr++;
     }
+    fclose(stdin);
+    freopen("CON", "r", stdin);
 
-    mergesort(strarr, 0, numofstr - 1);
+    int method;
+    printf("Choose the method of sorting:\n1 for BubbleSort\n2 for MergeSort\n3 for InsertionSort\n4 for QuickSort\n");
+    scanf("%d", &method);
 
+    switch(method)
+    {
+    case 1:
+        bubblesort(strarr, numofstr);
+        break;
+    case 2:
+        mergesort(strarr, 0, numofstr - 1);
+        break;
+    case 3:
+        insertionsort(strarr, numofstr);
+        break;
+    case 4:
+        quicksort(strarr, 0, numofstr);
+        break;
+    default:
+        break;
+    }
+
+    freopen("output.txt", "w", stdout);
     for (i = 0; i < numofstr; i++)
     {
         fputs(strarr[i], stdout);
         fputs("\n", stdout);
     }
 
-fclose(stdin);
-fclose(stdout);
-return 0;
+    fclose(stdout);
+    free(strarr);
+    return 0;
 }
