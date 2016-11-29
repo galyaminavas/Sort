@@ -15,16 +15,19 @@ int main(int argc, char **argv)
     else
     {
         int i;
-        int numofstr;
+        int numofstr = 0;
+        int buff = 0;
+        int method = 0;
         char *inputname = malloc(maxlen);
+        FILE *filein;
 
         numofstr = atoi(argv[1]);
-        printf("The number of lines: %d\n", numofstr);
+        printf("Amount of lines: %d\n", numofstr);
 
         inputname = argv[2];
-        printf("The name of file: %s\n", inputname);
+        printf("Name of file: %s\n\n", inputname);
 
-        freopen(inputname, "r", stdin);
+        filein = fopen(inputname, "r");
 
         char **strarr = malloc(numofstr * sizeof(char*));
 
@@ -32,55 +35,74 @@ int main(int argc, char **argv)
         {
             strarr[i] = malloc((maxlen) * sizeof(char));
         }
+
         for (i = 0; i < numofstr; i++)
         {
-            fgets(strarr[i], maxlen, stdin);
+            if (feof(filein))
+            {
+                break;
+            }
+            fgets(strarr[i], maxlen, filein);
             char *pos;
             if ((pos = strchr(strarr[i], '\n')) != NULL)
             {
                 *pos = '\0';
             }
+            buff++;
         }
-        fclose(stdin);
-        freopen("CON", "r", stdin);
 
-        int method;
-        printf("Choose the method of sorting:\n1 for BubbleSort\n2 for MergeSort\n3 for InsertionSort\n4 for QuickSort\n");
+        if (numofstr > buff)
+        {
+            numofstr = buff;
+        }
+
+        fclose(filein);
+
+        printf("Choose the method of sorting:\n1 for Bubble Sort\n2 for Merge Sort\n3 for Insertion Sort\n4 for Quick Sort\n");
         scanf("%d", &method);
 
         switch(method)
         {
         case 1:
             {
-                bubblesort(strarr, numofstr);
+                printf("You've chosen Bubble Sort\n\n");
+                sort_bubble(strarr, numofstr);
                 break;
             }
         case 2:
             {
-                mergesort(strarr, 0, numofstr - 1);
+                printf("You've chosen Merge Sort\n\n");
+                sort_merge(strarr, 0, numofstr - 1);
                 break;
             }
         case 3:
             {
-                insertionsort(strarr, numofstr);
+                printf("You've chosen Insertion Sort\n\n");
+                sort_insertion(strarr, numofstr);
                 break;
             }
         case 4:
             {
-                quicksort(strarr, 0, numofstr - 1);
+                printf("You've chosen Quick Sort\n\n");
+                sort_quick(strarr, 0, numofstr - 1);
                 break;
             }
         default:
             {
+                printf("Incorrect input of method\n");
                 break;
             }
             break;
         }
 
-        for (i = 0; i < numofstr; i++)
+        if ((method >= 1) && (method <= 4))
         {
-            fputs(strarr[i], stdout);
-            fputs("\n", stdout);
+            for (i = 0; i < numofstr; i++)
+            {
+                printf("%d. ", i + 1);
+                fputs(strarr[i], stdout);
+                fputs("\n", stdout);
+            }
         }
 
         free(strarr);
