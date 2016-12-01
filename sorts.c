@@ -3,8 +3,6 @@
 #include <string.h>
 #include "sorts.h"
 
-const int maxl = 1000;
-
 void swap(char **str1, char **str2)
 {
     char *str;
@@ -44,21 +42,19 @@ void merge(char **arr, int left, int middle, int right)
     int i;
     int j;
     int k;
-    int leftamount = middle - left + 1;
-    int rightamount = right - middle;
+    int left_amount = middle - left + 1;
+    int right_amount = right - middle;
 
-    char **left_buff = malloc(leftamount * sizeof(char*));
-    char **right_buff = malloc(rightamount * sizeof(char*));
+    char **left_buff = malloc(left_amount * sizeof(char*));
+    char **right_buff = malloc(right_amount * sizeof(char*));
 
-    for (i = 0; i < leftamount; i++)
+    for (i = 0; i < left_amount; i++)
     {
-        left_buff[i] = malloc((maxl) * sizeof(char));
         left_buff[i] = arr[left + i];
     }
 
-    for (j = 0; j < rightamount; j++)
+    for (j = 0; j < right_amount; j++)
     {
-        right_buff[j] = malloc((maxl) * sizeof(char));
         right_buff[j] = arr[middle + 1 + j];
     }
 
@@ -66,7 +62,7 @@ void merge(char **arr, int left, int middle, int right)
     j = 0;
     k = left;
 
-    while (i < leftamount && j < rightamount)
+    while (i < left_amount && j < right_amount)
     {
         if (strcmp(left_buff[i], right_buff[j]) < 0)
         {
@@ -80,18 +76,19 @@ void merge(char **arr, int left, int middle, int right)
         }
         k++;
     }
-    while (i < leftamount)
+    while (i < left_amount)
     {
         arr[k] = left_buff[i];
         i++;
         k++;
     }
-    while (j < rightamount)
+    while (j < right_amount)
     {
         arr[k] = right_buff[j];
         j++;
         k++;
     }
+
     free(left_buff);
     free(right_buff);
 }
@@ -133,5 +130,56 @@ void sort_insertion(char **arr, int num)
         {
             swap(&arr[j - 1], &arr[j]);
         }
+    }
+}
+
+int count_strings (FILE *f)
+{
+    int current_string = 0;
+    int current_symbol = fgetc(f);
+    while (current_symbol != EOF)
+    {
+        if (current_symbol == '\n')
+         {
+            current_string++;
+         }
+         current_symbol = fgetc (f);
+    }
+    return current_string;
+}
+
+void count_strings_length(FILE *f, int *strings_len)
+{
+    int current_symbol = fgetc(f);
+    int current_string = 0;
+    int current_string_len = 0;
+    while (current_symbol != EOF)
+    {
+        if (current_symbol == '\n')
+         {
+            strings_len[current_string] = current_string_len;
+            current_string++;
+            current_string_len = 0;
+         }
+         else
+         {
+             current_string_len++;
+         }
+         current_symbol = fgetc (f);
+    }
+}
+
+void read_strings(FILE *f, char **strings, int number_of_lines, int *strings_len)
+{
+    int i;
+    for (i = 0; i < number_of_lines; i++)
+    {
+        strings[i] = (char *)malloc(sizeof(char) * (strings_len[i] + 1)); // +1 to store '\0' symbol
+        for (int j = 0; j < strings_len[i]; j++)
+        {
+            strings[i][j] = fgetc(f);
+        }
+        fgetc(f); // \n
+        strings[i][strings_len[i]] = '\0';
     }
 }
