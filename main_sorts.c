@@ -15,11 +15,7 @@ int main(int argc, char **argv)
     int input_num_of_lines = atoi(argv[1]);
     char *filename = argv[2];
     FILE *fileinp;
-    if (fopen(filename, "r") != NULL)
-    {
-        fileinp = fopen(filename, "r");
-    }
-    else
+    if ((fileinp = fopen(filename, "r")) == NULL)
     {
         printf("Incorrect name of file\n");
         return -1;
@@ -28,6 +24,15 @@ int main(int argc, char **argv)
     printf("Number of lines: %d\n", input_num_of_lines);
     
     printf("Name of file: %s\n\n", filename);
+    
+    int method = 0;
+    printf("Choose the method of sorting:\n1 for Bubble Sort\n2 for Merge Sort\n3 for Insertion Sort\n4 for Quick Sort\n");
+    if (scanf("%d", &method) != 1)
+    {
+        printf("Error while scanning the method\n");
+        fclose(fileinp);
+        return -1;
+    }
     
     int number_of_lines = count_strings(fileinp);
     rewind(fileinp);
@@ -42,10 +47,6 @@ int main(int argc, char **argv)
     
     char **strings = (char **)malloc(sizeof(char *) * number_of_lines);
     read_strings(fileinp, strings, number_of_lines, strings_len);
-    
-    int method = 0;
-    printf("Choose the method of sorting:\n1 for Bubble Sort\n2 for Merge Sort\n3 for Insertion Sort\n4 for Quick Sort\n");
-    scanf("%d", &method);
     
     switch(method)
     {

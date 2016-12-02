@@ -45,8 +45,8 @@ void merge(char **arr, int left, int middle, int right)
     int left_amount = middle - left + 1;
     int right_amount = right - middle;
 
-    char **left_buff = malloc(left_amount * sizeof(char*));
-    char **right_buff = malloc(right_amount * sizeof(char*));
+    char **left_buff = (char **)malloc(left_amount * sizeof(char*));
+    char **right_buff = (char **)malloc(right_amount * sizeof(char*));
 
     for (i = 0; i < left_amount; i++)
     {
