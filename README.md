@@ -1,4 +1,4 @@
-GProf's output for Quick Sort on on >100 000 strings test
+GProf's output for Quick Sort on >100 000 strings test
 
 Flat  profile:
 
