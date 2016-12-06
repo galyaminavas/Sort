@@ -73,10 +73,8 @@ granularity: each sample hit covers 2 byte(s) for 9.96% of 0.10 seconds
  index | % time | self | children | called | name <spontaneous> 
 ------ | ------ | ------ | ------ | ------ | ------ 
  [1] |  |  40.0 |  0.04 |  0.00 |  count_strings_length  [1]
- [1] |  |  |  |  |  |  <spontaneous>  [2]
- |  |  30.0 |  0.03 |  0.00 |  count_strings  [2]
- |  |  |  |  |  <spontaneous>  [3]
- |  |  20.0 |  0.02 |  0.00 |  read_strings  [3]
+ [2]  |  30.0 |  0.03 |  0.00 |  count_strings  [2]
+ [3]  |  20.0 |  0.02 |  0.00 |  read_strings  [3]
  |  |  0.01 |  0.00 |  186695/186695 |  sort_merge  [5]
  [4] |  10.0 |  0.01 |  0.00 |  186695 |  merge  [4]
  |  |  |  |  373392 |  sort_merge  [5]
