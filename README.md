@@ -83,4 +83,15 @@ granularity: each sample hit covers 2 byte(s) for 9.96% of 0.10 seconds
  |  |  |  |  373392 |  sort_merge  [5]
 
 
+Bubble Sort
 
+Flat  profile:
+
+Each sample counts as 0.01 seconds.
+
+  % time | cumulative seconds | self seconds | calls | self Ts/call | total Ts/call | name 
+------ | ------ | ------ | ------ | ------ | ------ | ------ 
+ 100.01 |  22.29 |  22.29 |  |  |  |  sort_bubble 
+ 0.23 |  22.34 |  0.05 |  |  |  |  count_strings_length 
+ 0.09 |  22.36 |  0.02 |  |  |  |  read_strings 
+ 0.05 |  22.37 |  0.01 |  |  |  |  count_strings 
