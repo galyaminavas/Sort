@@ -1,9 +1,9 @@
-more than 100 000 strings test
+_GPRof's output for ~180 000 strings test_
 
-Quick Sort
+**Quick Sort**
+==============
 
 Flat  profile:
-
 
 Each sample counts as 0.01 seconds.
 
@@ -34,7 +34,8 @@ granularity: each sample hit covers 2 byte(s) for 0.31% of 3.24 seconds
  [4] |  0.9 |  0.03 |  0.00 |  |count_strings_length  [4]
  
  
- Insertion Sort
+**Insertion Sort**
+===================
  
  Flat  profile:
 
@@ -49,7 +50,8 @@ Each sample counts as 0.01 seconds.
  0.16 |  6.16 |  0.01 |  |  |  |  count_strings_length 
  
  
- Merge Sort
+**Merge Sort**
+==============
  
  Flat  profile:
 
@@ -83,7 +85,8 @@ granularity: each sample hit covers 2 byte(s) for 9.96% of 0.10 seconds
  |  |  |  |  373392 |  sort_merge  [5]
 
 
-Bubble Sort
+**Bubble Sort**
+===============
 
 Flat  profile:
 
